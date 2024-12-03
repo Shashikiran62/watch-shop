@@ -1,0 +1,47 @@
+{% extends 'main.html' %}
+
+{% block body_block %}
+<!-- Display messages -->
+{% if messages %}
+  <div class="container mt-3">
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}" role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+<!-- Check if wishlist has items -->
+{% if user_products %}
+  {% for item in user_products %}
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-md-6">
+        <img
+          src="{{ item.image.url }}"
+          alt="Not Available"
+          class="img-fluid product-img"
+        />
+      </div>
+      <div class="col-md-6 product_descrpition">
+        <h2>{{ item.name }}</h2>
+        <h3>Amount: Rs {{ item.price }}</h3>
+        <p>{{ item.description }}</p>
+
+        <a href="{% if isCart %}{% url 'removeCart' id=item.id %}{% else %}{% url 'removewish' id=item.id %}{% endif %}" 
+           class="btn btn-primary">
+           Remove
+        </a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+{% else %}
+  <!-- Empty wishlist message -->
+  <div class="container mt-5">
+    <h3>Your wishlist is currently empty.</h3>
+    <a href="{% url 'home' %}" class="btn btn-primary mt-3">Explore Watches</a>
+  </div>
+{% endif %}
+{% endblock %}
